@@ -4,7 +4,7 @@ Welcome to the PRIMA 2020 automated negotiation in SCM tutorial. Here you can fi
 material you need for this tutorial as well as useful links for further research in this area.
 
 ## Duration
-$2$ hours. Anytime between 0:00GMT and 9:00GMT to start.
+Two hours. Anytime between 0:00GMT and 9:00GMT to start.
 
 ## Description
 Automated negotiation between intelligent agents is
