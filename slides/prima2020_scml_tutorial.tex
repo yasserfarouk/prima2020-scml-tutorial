@@ -76,11 +76,11 @@ framesep=3mm}
 % define commands for this presentation only
 \include{commands}
 \begin{document}
-\title{Automated Negotiation}
-\subtitle{A Tutorial}
+\title{Automated Negotiations in Supply Chain Management}
+\subtitle{SCML \@ ANAC \@ IJCAI}
 \author{\textbf{Yasser Mohammad}$^{1,2}$}
-\institute{$^1$ NEC-AIST Collaborative Lab., AIST, Japan \and $^2$ Assiut University, Egypt}
-\date{October 29, 2019}
+\institute{$^1$ NEC Corporation, AIST, and RIKEN, Japan \and $^2$ Assiut University, Egypt}
+\date{November 20, 2020}
 
 \begin{frame}
 	\titlepage
@@ -109,6 +109,7 @@ framesep=3mm}
 	\addtocounter{framenumber}{-1}
 }
 
+\setbeamercovered{transparent}
 \section[Negotiation]{Negotiation}
 \begin{frame}[label=neg]
 	\centering
@@ -117,7 +118,7 @@ framesep=3mm}
 	\includegraphics<3>[page=3,width=.75\textwidth]{figs/overview.pdf}
 	\includegraphics<4>[page=4,width=.75\textwidth]{figs/overview.pdf}
 	\includegraphics<5->[page=5,width=.75\textwidth]{figs/overview.pdf}
-	\setbeamercovered{transparent}
+	% \setbeamercovered{transparent}
 	\begin{itemize}
 		\item<6-> A method to achieve agreement among self-interested actors.
 		\item<7-> Negotiation is important  $\rightarrow$ win-win agreements.
@@ -748,6 +749,7 @@ framesep=3mm}
 						\end{itemize}
 				\end{itemize}
 			\end{block}
+			\pause
 			\begin{block}{Score Evaluation}
 				\begin{itemize}
 					\item \textbf{Per instantiation}: Total profit counting
@@ -755,10 +757,18 @@ framesep=3mm}
 					\item \textbf{Total}: \blue{median} of per-instantiation scores.
 				\end{itemize}
 			\end{block}
+			\pause
+			\begin{block}{Flavors}
+				\begin{itemize}
+					\item Online competition at \href{https://scml.cs.brown.edu}{https://scml.cs.brown.edu}
+						\item Official competition as part of ANAC.
+				\end{itemize}
+			\end{block}
 		\end{column}
 		\begin{column}{0.3\textwidth}
 			\centering
-			\includegraphics[width=\linewidth]{./figs/sideinfo}
+			\includegraphics<1->[width=\linewidth]{./figs/sideinfo}
+			\includegraphics<3->[width=0.9\linewidth]{./figs/online.png}
 		\end{column}
 	\end{columns}
 \end{frame}
@@ -955,6 +965,29 @@ framesep=3mm}
 		\end{itemize}
 	\end{block}
 \end{frame}
+
+\begin{frame}[t]
+	\frametitle{Information about previous simulations}
+	\begin{itemize}[<+->]
+		\item Agents \textbf{cannot} pass information between simulations.
+			\item We release datasets from the online competition including:
+				\begin{itemize}
+					\item World parameters.
+					\item Agent types.
+					\item Financial reports.
+					\item Contracts.
+					\item Breaches.
+				\end{itemize}
+				\item This data is anonymous:
+\begin{itemize}
+						\item You \textbf{cannot} associate an agent type with 
+							a specific participant.
+						\item You \textbf{can} associate agent types
+							across simulations.
+					\end{itemize}
+	\end{itemize}
+\end{frame}
+
 \begin{frame}[t]
 	\frametitle{Development Approaches}
 	\begin{block}{Monolithic Agent}
@@ -1115,42 +1148,42 @@ framesep=3mm}
 % 	\end{exampleblock}
 % \end{frame}
 
-\begin{frame}[t]
-	\frametitle{Summary}
-	\begin{columns}
-		\begin{column}{0.5\textwidth}
-			\begin{block}{Challenge}
-				\begin{itemize}
-					\item Turn \textcolor{blue}{maximize profit} into a ufun!!
-					\item Dynamic interdependent ufuns.
-					\item Sequential negotiations.
-					\item Concurrent Negotiations.
-					\item Negotiation under uncertainty.
-					\item Adaptation and learning.
-					\item Trust management.
-				\end{itemize}
-			\end{block}
-
-			\begin{block}{Information}
-				\begin{itemize}
-					\item \textbf{Website} \tiny \href{https://scml.cs.brown.edu/}{https://scml.cs.brown.edu/}
-					\item \textbf{Code} \tiny \href{GitHub scml}{https://www.github.com/yasserfarouk/scml}
-					\item \textbf{Youtube} \tiny \href{https://bit.ly/3pBjZWY}{https://www.youtube.com/playlist?list=PLqvs51K2Mb8IJe5Yz5jmYrRAwvIpGU2nF}
-				\end{itemize}
-			\end{block}
-		\end{column}
-		\begin{column}{0.5\textwidth}
-			\centering
-			\includegraphics[width=\linewidth]{./figs/sideinfo}
-		\end{column}
-	\end{columns}
-\end{frame}
-\begin{frame}[allowframebreaks]%in case more than 1 slide needed
-	\frametitle{References}
-	{\footnotesize
-		\bibliographystyle{apalike}
-		\bibliography{prima2020_scml_tutorial}
-	}
-\end{frame}
+% \begin{frame}[t]
+% 	\frametitle{Summary}
+% 	\begin{columns}
+% 		\begin{column}{0.5\textwidth}
+% 			\begin{block}{Challenge}
+% 				\begin{itemize}
+% 					\item Turn \textcolor{blue}{maximize profit} into a ufun!!
+% 					\item Dynamic interdependent ufuns.
+% 					\item Sequential negotiations.
+% 					\item Concurrent Negotiations.
+% 					\item Negotiation under uncertainty.
+% 					\item Adaptation and learning.
+% 					\item Trust management.
+% 				\end{itemize}
+% 			\end{block}
+%
+% 			\begin{block}{Information}
+% 				\begin{itemize}
+% 					\item \textbf{Website} \tiny \href{https://scml.cs.brown.edu/}{https://scml.cs.brown.edu/}
+% 					\item \textbf{Code} \tiny \href{GitHub scml}{https://www.github.com/yasserfarouk/scml}
+% 					\item \textbf{Youtube} \tiny \href{https://bit.ly/3pBjZWY}{https://www.youtube.com/playlist?list=PLqvs51K2Mb8IJe5Yz5jmYrRAwvIpGU2nF}
+% 				\end{itemize}
+% 			\end{block}
+% 		\end{column}
+% 		\begin{column}{0.5\textwidth}
+% 			\centering
+% 			\includegraphics[width=\linewidth]{./figs/sideinfo}
+% 		\end{column}
+% 	\end{columns}
+% \end{frame}
+% \begin{frame}[allowframebreaks]%in case more than 1 slide needed
+% 	\frametitle{References}
+% 	{\footnotesize
+% 		\bibliographystyle{apalike}
+% 		\bibliography{prima2020_scml_tutorial}
+% 	}
+% \end{frame}
 
 \end{document}
