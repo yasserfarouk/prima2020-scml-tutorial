@@ -1,0 +1,163 @@
+\newcommand{\mydef}[1]{{\textbf{#1}}}
+%\newcommand{\mydef}[1]{{\emph{#1}\/}}
+\newcommand{\varname}[1]{{\emph{#1}}}
+
+
+%--------------
+% General Flags
+% -------------
+
+% Does every process take one input item and generates one output item?
+\newcommand{\singleInSingleOut}[2]{#1}
+
+% Enable CFP mechanism?
+\newcommand{\withcfp}[2]{#2}
+
+% Force signature. If true, (#1), then no calls to sign_contract or sign_all_contracts will be run and all agreements (concluded contracts) are immediately binding
+\newcommand{\forcesignature}[2]{#2}
+
+% True if we have zero signing delay.
+\newcommand{\zerosigndelay}[2]{#1}
+
+% Batch signature. If true, (#1), then the agent is asked to sign ALL contracts concluded at one step together instead of being asked to sign them one by one.
+\newcommand{\batchsignature}[2]{#1}
+
+% Keeps a running trading price for each product.
+\newcommand{\tradingprice}[2]{#1}
+
+%---------------------------------------
+% Breach processing and bankruptcy flags
+% --------------------------------------
+
+% Can the agent borrow money (i.e. can its balance go negative)? If False (#2), agents will go bankrupt immediately when their balance hits zero. If true, agents will go bankrupt when their balance hits -bankruptcy_limit and they will be paying interest_rate interest per step for any negative balance (combined interest)
+\newcommand{\canborrow}[2]{#2}
+
+% Enable borrowing? If enabled, it allows the balance to go to negative values during breach resolution. money breaches, inventory breaches, and failure to pay penalties all will lead to forced borrowing if this is enabled.
+\newcommand{\forceborrow}[2]{#2}
+
+% Enables an external spot market that is used to buy missing products in cases product breaches.
+\newcommand{\forcespot}[2]{#1}
+
+% Allows agents committing breaches (product/money) to run immediate fast negotiations with any partners to (buy/sell) products to cover the breach.
+\newcommand{\spotnegotiations}[2]{#2}
+
+% Report breaches even after borrowing to pay for them? No matter what is the setting here, a breach will be reported if borrowing did not resolve the issue. This flag takes effect only if the breach was not resolved through borrowing.
+\newcommand{\reportbreach}[2]{#1}
+
+% Global breach penalty paid to ``society''
+\newcommand{\breachpenalty}[2]{#2}
+
+% Proportional partial execution for contracts at the same time-step. If False, execution is at a predefined order for contracts with the same delivery time.
+\newcommand{\proportionalCompensation}[2]{#2}
+
+% Order contracts with the same delivery time by the singing time during bankruptcy processing
+\newcommand{\orderBySigningTime}[2]{#1}
+
+%----------------------------------
+% External Contract Execution flags
+% ---------------------------------
+
+% IF true, exogenous contracts are treated exactly like normal contracts
+\newcommand{\externalLikeNormal}[2]{#1}
+
+% The external contracts are only known up to some future horizon (the other option is that they are known for the whole length of the simulation)?
+\newcommand{\withhorizon}[2]{#1}
+
+% Force external contracts to be executed in full (the other option is to allow the agent to choose the quantity it wants to execute)?
+\newcommand{\forceexternal}[2]{#1}
+
+% Whether to allow agents to borrow for external contracts
+\newcommand{\externalBorrow}[2]{#1}
+% Whether to allow agents to go bankrupt for external contracts
+\newcommand{\externalBankrupt}[2]{#1}
+
+%--------------------------------
+% Production flags (Factory step)
+% -------------------------------
+
+% Whether to allow agents to borrow for external contracts
+\newcommand{\productionBorrow}[2]{#1}
+% Whether to allow agents to go bankrupt for external contracts
+\newcommand{\productionBankrupt}[2]{#1}
+% If true, production failures are silent. Otherwise, production can lead to borrowing to execute it. If \canborrow is false, this MUST be true.
+\newcommand{\silentfailure}[2]{#1}
+
+%----------------
+% Other commands
+% ---------------
+
+
+\newcommand{\external}{exogenous}
+\newcommand{\External}{Exogenous}
+\newcommand{\transaction}{contract}
+\newcommand{\Transaction}{Contract}
+\newcommand{\TimeHorizon}{T}
+\newcommand{\SetOfContracts}{C}
+\newcommand{\Contract}{c}
+\newcommand{\moneyunit}{dollar}
+\newcommand{\moneyunits}{dollars}
+\newcommand{\CFP}{\text{CFP}}
+\newcommand{\Raw}{\text{Raw}}
+\newcommand{\Final}{\text{Final}}
+\newcommand{\Intermediate}{\text{Intermediate}}
+\newcommand{\In}{\text{In}}
+\newcommand{\Out}{\text{Out}}
+\newcommand{\inn}{\text{in}}
+\newcommand{\out}{\text{out}}
+\newcommand{\buy}{\text{buy}}
+\newcommand{\sell}{\text{sell}}
+\newcommand{\yes}{\text{yes}}
+\newcommand{\no}{\text{no}}
+\newcommand{\tp}{\text{tp}}
+\newcommand{\sm}{\text{ip}}
+\newcommand{\gl}{\text{gp}}
+\newcommand{\cat}{\text{cat}}
+\newcommand{\negotiate}{\text{neg}}
+\newcommand{\Arg}[1]{{\emph{\hbox{#1}}}}
+
+\newcommand{\credit}{\text{cr}}
+\newcommand{\cv}{\text{cv}}
+\newcommand{\MABL}{\text{MABL}}
+\newcommand{\BrReNeg}{\text{BrReNeg}}
+\newcommand{\BrPen}{\text{BrPen}}
+\newcommand{\ReNegBrPen}{\text{ReNegBrPen}}
+\newcommand{\nf}{n^f}
+\newcommand{\Uniform}[2]{\ensuremath{\mathcal{U}\left\{#1, #2\right\}}}
+\newcommand{\Normal}[2]{\ensuremath{\mathcal{N}\left\{\mu=#1, \sigma=#2\right\}}}
+
+\newcommand{\level}{l}
+\newcommand{\process}{\level}
+\newcommand{\product}{p}
+\newcommand{\factory}{f}
+\newcommand{\agent}{\factory}
+\newcommand{\nProcesses}{L}
+\newcommand{\nLevels}{\nProcesses}
+\newcommand{\nProducts}{P}
+\newcommand{\nFactories}{F}
+\newcommand{\nFactoriesPerLevel}{F_\level}
+\newcommand{\nFactoriesGeneratingProduct}{F_{\product-1}}
+\newcommand{\cost}{c}
+\newcommand{\costPerProcess}{c_\process}
+\newcommand{\costPerFactory}{c_\factory}
+\newcommand{\step}{d}
+\newcommand{\profit}{\pi}
+\newcommand{\productivity}{\eta}
+\newcommand{\cashAvailability}{a}
+\newcommand{\exgenousControllability}{e}
+\newcommand{\catalogPrice}{g}
+\newcommand{\activeLines}{A}
+\newcommand{\quantityProducible}{Q}
+\newcommand{\exogenoutQuantity}{q}
+\newcommand{\nExogenous}{n}
+\newcommand{\nCompetitors}{C}
+\newcommand{\competitor}{i}
+\newcommand{\nAgentsPerCompetitor}{A_\competitor}
+\newcommand{\CompetitorList}{\mathcal{C}}
+%\newcommand{\CompetitorList}{\{ 0, \ldots, \nCompetitors-1 \}}
+\newcommand{\balance}{b}
+\newcommand{\nRepetition}{K}
+\newcommand{\nCompetitorsPerWorld}{M}
+\newcommand{\nSteps}{S}
+\newcommand{\nLines}{\nu}
+
+\newtheorem{remark}{Remark}

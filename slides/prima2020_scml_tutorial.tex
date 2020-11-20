@@ -1,6 +1,7 @@
 \documentclass[10pt]{beamer}
 \usetheme{Frankfurt}
 \mode<presentation>
+\usepackage[]{xcolor}
 \usepackage{minted}
 \usepackage{listings}
 \usepackage{multicol}
@@ -62,6 +63,18 @@ framesep=3mm}
 \setbeamertemplate{bibliography entry note}{}
 \addtobeamertemplate{navigation symbols}{}{ \hspace{1em}    \usebeamerfont{footline}%
 \insertframenumber / \inserttotalframenumber }
+
+% defining text colors
+\newcommand{\blue}[1]{\textcolor{blue}{#1}}
+\newcommand{\red}[1]{\textcolor{red}{#1}}
+\newcommand{\orange}[1]{\textcolor{orange}{#1}}
+\newcommand{\green}[1]{\textcolor{green}{#1}}
+\newcommand{\black}[1]{\textcolor{black}{#1}}
+\newcommand{\yellow}[1]{\textcolor{yellow}{#1}}
+\newcommand{\white}[1]{\textcolor{white}{#1}}
+
+% define commands for this presentation only
+\include{commands}
 \begin{document}
 \title{Automated Negotiation}
 \subtitle{A Tutorial}
@@ -181,7 +194,6 @@ framesep=3mm}
 		\item[Pareto Frontier] Outcomes that cannot be improved for one actor without making another worse off.
 		\item[Welfare] Total utility received by all actors.
 		\item[Surplus utility] Utility above disagreement utility.
-		\item[Nash Equilibrium] Strategies that are best responses to each other.
 	\end{description}
 \end{frame}
 
@@ -657,10 +669,13 @@ framesep=3mm}
 	\begin{itemize}
 		\item Human negotiations lead to an estimated 17-40\% \emph{value leakage} in some estimates
 			\footnote{\small KPMG report: \href{https://bit.ly/3kDRy6I}\href{https://bit.ly/3kDRy6I}}
+			\pause
 		\item A recent study suggests that at least 15 companies are working in \emph{contracting support systems}
 			\footnote{\small Forrester report: \href{https://bit.ly/3nwXEaY}{https://bit.ly/3nwXEaY}}.
+			\pause
 		\item A recent UNECE UN/CEFACT proposal to standardize negotiation protocols for SCM and other applications
 			\footnote{\small UN/CEFACT Project website: \href{https://bit.ly/38LOsLX}{https://bit.ly/38LOsLX}}
+			\pause
 		\item More to come~\cite{mohammad2019supply}.
 	\end{itemize}
 \end{frame}
@@ -718,6 +733,36 @@ framesep=3mm}
 		\end{column}
 	\end{columns}
 \end{frame}
+
+\begin{frame}[t]
+	\frametitle{SCML Competition}
+	\begin{columns}
+		\begin{column}{0.7\textwidth}
+			\begin{block}{Competition Details}
+				\begin{itemize}
+					\item Runs as part of ANAC \@ IJCAI.
+					\item You control one or more factories.
+						\begin{itemize}
+							\item \textbf{Standard track} $\to$ one factory.
+							\item \textbf{Collusion track} $\to$ multiple factories (3).
+						\end{itemize}
+				\end{itemize}
+			\end{block}
+			\begin{block}{Score Evaluation}
+				\begin{itemize}
+					\item \textbf{Per instantiation}: Total profit counting
+						inventory at \blue{half} the \blue{trading} price.
+					\item \textbf{Total}: \blue{median} of per-instantiation scores.
+				\end{itemize}
+			\end{block}
+		\end{column}
+		\begin{column}{0.3\textwidth}
+			\centering
+			\includegraphics[width=\linewidth]{./figs/sideinfo}
+		\end{column}
+	\end{columns}
+\end{frame}
+
 \begin{frame}[t]
 	\frametitle{Simulation Steps}
 	\begin{adjustwidth}{-2.5em}{0em}
@@ -732,22 +777,184 @@ framesep=3mm}
 \end{frame}
 
 \begin{frame}[t]
-	\frametitle{Callbacks and Timing}
-	\begin{adjustwidth}{-2.5em}{0em}
-		% \begin{overlayarea}{\textwidth}{\textheight}
-		% 	\begin{figure}
-		% 		\centering
-		% \makebox[\textwidth]{
-		\foreach \x in {1, ..., 17}{
-			\includegraphics<\x>[width=\paperwidth, page=\x]{./figs/callbacks}
-		}
-		% 	}
-		% \end{figure}
-		% \end{overlayarea}
-	\end{adjustwidth}
+	\frametitle{Trading prices}
+	\centering
+	\includegraphics[width=\linewidth]{figs/trading.png}
+	\begin{block}{What is trading price and why is it calculated?}
+		\begin{itemize}
+			\item A value calculated by the system \blue{for each product}.
+			\item Represents some estimate of the \blue{current} price.
+			\item \blue{Never revealed} to agents.
+			\item Usages:
+				\begin{itemize}
+					\item Used at the end to value inventory.
+					\item Used when calculating \blue{spot-market price}.
+						during breach processing.
+				\end{itemize}
+		\end{itemize}
+	\end{block}
+	\begin{block}{How does the system calculate it?}
+		\[
+			\tp (p, s) =
+			\frac{\beta^{s+1} \; Q_{-1}(p) \; \cat (p) + \sum_{i=0}^{s}
+				\beta^{s-i} \; Q_{i} (p) \; \mu_i (p)}{\beta^{s+1}+\sum_{i=0 \mid
+			Q_{i}(p)>0}^{s} \beta^{s-i}} \enspace ,
+		\]
+	\end{block}
+\end{frame}
+\begin{frame}[t]
+	\frametitle{Trading prices: The details}
+	\begin{block}{Quantities and prices}
+		\[
+			Q_i (p') = \sum_{\{c \in C^i \mid c.p = p' \}} c.\bar q
+		\]
+		\[
+			\mu_i (p') = \frac{\sum_{\{c \in C^i \mid c.p = p'\}} c.\bar q \times c.u}{Q_i (p')}
+		\]
+	\end{block}
+
+	\begin{block}{How does the system calculate it?}
+		\[
+			\tp (p, s) =
+			\frac{\beta^{s+1} \; Q_{-1}(p) \; \cat (p) + \sum_{i=0}^{s}
+				\beta^{s-i} \; Q_{i} (p) \; \mu_i (p)}{\beta^{s+1}+\sum_{i=0 \mid
+			Q_{i}(p)>0}^{s} \beta^{s-i}} \enspace ,
+		\]
+	\end{block}
+\end{frame}
+\begin{frame}[t]
+	\frametitle{When things go wrong}
+	\begin{columns}
+		\begin{column}{0.6\textwidth}
+			\begin{block}{What is a breach}
+				\begin{itemize}
+					\item Insufficient funds or insufficient inventory.
+				\end{itemize}
+			\end{block}
+			\begin{block}<2->{Breach Processing}
+				\begin{itemize}[<+->]
+					\item A breach report is \textbf{always} published.
+						\begin{itemize}
+							\item who and fraction.
+						\end{itemize}
+					\item Insufficient products $\to$ \textbf{forced to} buy
+						from the \blue{spot market}.
+					\item Insufficient funds $\to$ bankruptcy.
+						\begin{itemize}
+							\item bankruptcy $\to$ liquidation.
+						\end{itemize}
+				\end{itemize}
+			\end{block}
+		\end{column}
+		\begin{column}{0.4\textwidth}
+			\includegraphics[width=\linewidth]{figs/breach.pdf}
+		\end{column}
+	\end{columns}
+\end{frame}
+
+\begin{frame}[t]
+	\frametitle{Spot Market}
+	\begin{block}{Spot market}
+		\begin{itemize}[<+->]
+			\item \textbf{No-choice:} Can be used \textbf{only} for insufficient inventory
+				breaches.
+			\item \textbf{Penalizing:} Entails higher price than the \blue{trading price}
+			\item \textbf{Personalized:} More breaches $\to$ higher spot price
+				\textbf{for you}
+		\end{itemize}
+	\end{block}
+	\begin{block}{Calculation}
+		\begin{itemize}[<+->]
+			\item Agent's spot price penalty:
+				\(
+				\sm_a (p, s) = \lambda \sum_{i=0}^{s} {\alpha^{s-i} q_a (p, i)} \enspace,
+				\)
+			\item Breaching agents buy \textbf{expensive}:
+				\[\tp(p, s) \times (1+\gl) \times (1+\sm_a(p,s))\]
+			\item Bankrupt agents are liquidated \textbf{cheap}:
+				\[\tp(p, s) / ((1+\gl) \times (1+\sm_a(p,s))\]
+		\end{itemize}
+	\end{block}
+\end{frame}
+
+\begin{frame}[t]
+	\frametitle{Bankruptcy Processing}
+	\begin{block}{Bankruptcy conditions}
+		\begin{itemize}[<+->]
+			\item Insufficient money for a buy contract.
+			\item Insufficient money to buy from the spot market for
+				as sell contract.
+		\end{itemize}
+	\end{block}
+	\begin{block}{What exactly happens?}
+		\begin{enumerate}[<+->]
+			\item The agent is stopped from every buying or selling.
+			\item Its inventory is sold on the spot market.
+			\item All agents are informed.
+			\item Agents with future contracts with it are
+				informed about the expected level of breach.
+			\item The agent's score is set to $-1$.
+		\end{enumerate}
+	\end{block}
+\end{frame}
+\begin{frame}[t]
+	\frametitle{When things go wrong: Summary}
+	\begin{columns}
+		\begin{column}{0.5\textwidth}
+			\begin{block}{Summary}
+				\begin{itemize}[<+->]
+					\item An unfulfilled contract is reported to the
+						\textbf{breach-list} (who and fraction).
+					\item Insufficient funds $\to$ bankrupt.
+						\item Insufficient product $\to$ buy at high
+							cost.
+							\begin{itemize}
+								\item Cannot buy $\to$ bankrupt.
+							\end{itemize}
+						\item Bankrupt $\to$ \textbf{really really bad}
+							\begin{itemize}
+								\item No more trade.
+								\item Very low score.
+								\item All inventory is liquidated.
+								\item May hurt other agents.
+							\end{itemize}
+				\end{itemize}
+			\end{block}
+		\end{column}
+		\begin{column}{0.5\textwidth}
+			\includegraphics<1->[width=\textwidth]{figs/breach.pdf}
+		\end{column}
+	\end{columns}
 \end{frame}
 
 \section{Agent}
+\begin{frame}[t]
+	\frametitle{Agent Knowledge}
+	\begin{block}{About itself}
+		\begin{itemize}
+			\item \textbf{Its capabilities:} lines and production cost.
+			\item \textbf{Its location:} input and output products.
+			\item \textbf{Its partners:} suppliers and consumers (and competitors).
+			\item \textbf{Its state:} inventory, wallet, contracts, and negotiations.
+		\end{itemize}
+	\end{block}
+	\pause
+	\begin{block}{About the market}
+		\begin{itemize}
+			\item The production graph and factories at each level.
+			\item Time and simulation length.
+		\end{itemize}
+	\end{block}
+	\pause
+	\begin{block}{About others}
+		\begin{itemize}
+			\item \textbf{Financial Reports:} balance, assets,
+				breach fraction/probability.
+			\item \textbf{Past Interactions:} negotiations and
+				contracts between itself and that agent.
+		\end{itemize}
+	\end{block}
+\end{frame}
 \begin{frame}[t]
 	\frametitle{Development Approaches}
 	\begin{block}{Monolithic Agent}
@@ -758,6 +965,7 @@ framesep=3mm}
 			\item Harder to reuse.
 		\end{itemize}
 	\end{block}
+
 	\begin{block}{Component-Based Agent}
 		\begin{columns}
 			\begin{column}{0.5\textwidth}
@@ -769,13 +977,27 @@ framesep=3mm}
 				\end{itemize}
 			\end{column}
 			\begin{column}{0.5\textwidth}
-
-				\includegraphics[width=\textwidth]{./figs/cba}
+				\includegraphics[width=0.95\textwidth]{./figs/cba}
 			\end{column}
 		\end{columns}
 	\end{block}
 \end{frame}
 
+\begin{frame}[t]
+	\frametitle{Callbacks and Timing}
+	\begin{adjustwidth}{-2.5em}{0em}
+		% \begin{overlayarea}{\textwidth}{\textheight}
+		% 	\begin{figure}
+		% 		\centering
+		% \makebox[\textwidth]{
+		\foreach \x in {1, ..., 18}{
+			\includegraphics<\x>[width=\paperwidth, page=\x]{./figs/callbacks}
+		}
+		% 	}
+		% \end{figure}
+		% \end{overlayarea}
+	\end{adjustwidth}
+\end{frame}
 \begin{frame}[t]
 	\frametitle{What is a component?}
 	\begin{adjustwidth}{-2.5em}{0em}
